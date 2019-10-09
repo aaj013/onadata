@@ -100,7 +100,9 @@ class AttachmentViewSet(AuthenticateHeaderMixin, CacheControlMixin, ETagsMixin,
                 if not xform.shared_data:
                     raise Http404(_("Not Found"))
 
-        self.object_list = self.filter_queryset(self.get_queryset())
+        request_data = self.filter_queryset(self.get_queryset())
+        self.object_list = self.object_list = [
+            a for a in request_data if a.deleted_at is None]
         page = self.paginate_queryset(self.object_list)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

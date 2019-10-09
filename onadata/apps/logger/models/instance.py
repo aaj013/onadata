@@ -74,6 +74,7 @@ def _get_attachments_from_instance(instance):
         attachment['mimetype'] = a.mimetype
         attachment['filename'] = a.media_file.name
         attachment['name'] = a.name
+        attachment['deleted_at'] = a.deleted_at
         attachment['instance'] = a.instance.pk
         attachment['xform'] = instance.xform.id
         attachment['id'] = a.id

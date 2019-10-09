@@ -54,7 +54,7 @@ class AttachmentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         fields = ('url', 'filename', 'mimetype', 'field_xpath', 'id', 'xform',
                   'instance', 'download_url', 'small_download_url',
-                  'medium_download_url')
+                  'medium_download_url', 'deleted_at')
         model = Attachment
 
     @check_obj
