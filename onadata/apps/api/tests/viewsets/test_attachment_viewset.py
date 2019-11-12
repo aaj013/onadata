@@ -49,7 +49,8 @@ class TestAttachmentViewSet(TestAbstractViewSet):
             'xform': self.xform.pk,
             'instance': self.attachment.instance.pk,
             'mimetype': self.attachment.mimetype,
-            'filename': self.attachment.media_file.name
+            'filename': self.attachment.media_file.name,
+            'deleted_at': None
         }
         request = self.factory.get('/', **self.extra)
         response = self.retrieve_view(request, pk=pk)

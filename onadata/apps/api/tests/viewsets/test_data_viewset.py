@@ -1265,7 +1265,8 @@ class TestDataViewSet(TestBase):
                 'filename': attachment.media_file.name,
                 'name': attachment.name,
                 'id': attachment.pk,
-                'xform': xform.id}
+                'xform': xform.id,
+                'deleted_at': None}
             ],
             '_geolocation': [None, None],
             '_xform_id_string': xform.id_string,
@@ -1297,7 +1298,8 @@ class TestDataViewSet(TestBase):
                 'filename': attachment.media_file.name,
                 'name': attachment.name,
                 'id': attachment.pk,
-                'xform': xform.id
+                'xform': xform.id,
+                'deleted_at': None
             }]
             self.maxDiff = None
             response = view(request, pk=formid)
@@ -1336,7 +1338,8 @@ class TestDataViewSet(TestBase):
                 'filename': self.attachment.media_file.name,
                 'name': self.attachment.name,
                 'id': self.attachment.pk,
-                'xform': self.xform.id}
+                'xform': self.xform.id,
+                'deleted_at': None},
             ],
             '_geolocation': [None, None],
             '_xform_id_string': 'transportation_2011_07_25',
