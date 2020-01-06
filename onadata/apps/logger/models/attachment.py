@@ -92,9 +92,7 @@ class Attachment(models.Model):
         """
         Soft deletes an attachment by adding a deleted_at timestamp.
         """
-
-        soft_deletion_time = timezone.now()
-        self.deleted_at = soft_deletion_time
+        self.deleted_at = timezone.now()
         if user is not None:
             self.deleted_by = user
         self.save()
