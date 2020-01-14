@@ -229,13 +229,30 @@ class TestAttachmentViewSet(TestAbstractViewSet):
         self.assertEqual(len(response.data), 5)
 
         # test when the attachment is soft deleted
-        self.attachment.soft_delete()
+        self.attachment.soft_delete(user=self.user)
         self.attachment.save()
 
         request = self.factory.get('/', **self.extra)
         response = self.list_view(request)
 
         self.assertEqual(len(response.data), 4)
+
+    def test_soft_delete_action_returns_correct_user(self):
+        self._submit_transport_instance_w_attachment()
+
+        request = self.factory.get('/', **self.extra)
+        response = self.list_view(request)
+        self.assertEqual(len(response.data), 1)
+
+        # test when the attachment is soft deleted
+        self.attachment.soft_delete(user=self.user)
+        self.attachment.save()
+        # Test that deleted_by field captures the right user
+        self.assertTrue(self.attachment.deleted_by, self.user)
+
+        request = self.factory.get('/', **self.extra)
+        response = self.list_view(request)
+        self.assertEqual(len(response.data), 0)
 
     def test_data_list_with_xform_in_delete_async(self):
         self._submit_transport_instance_w_attachment()
