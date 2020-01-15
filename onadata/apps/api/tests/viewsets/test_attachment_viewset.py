@@ -230,7 +230,6 @@ class TestAttachmentViewSet(TestAbstractViewSet):
 
         # test when the attachment is soft deleted
         self.attachment.soft_delete(user=self.user)
-        self.attachment.save()
 
         request = self.factory.get('/', **self.extra)
         response = self.list_view(request)
@@ -246,7 +245,7 @@ class TestAttachmentViewSet(TestAbstractViewSet):
 
         # test when the attachment is soft deleted
         self.attachment.soft_delete(user=self.user)
-        self.attachment.save()
+
         # Test that deleted_by field captures the right user
         self.assertTrue(self.attachment.deleted_by, self.user)
 

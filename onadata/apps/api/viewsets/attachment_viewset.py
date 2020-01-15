@@ -47,7 +47,8 @@ class AttachmentViewSet(AuthenticateHeaderMixin, CacheControlMixin, ETagsMixin,
     content_negotiation_class = MediaFileContentNegotiation
     filter_backends = (filters.AttachmentFilter, filters.AttachmentTypeFilter)
     lookup_field = 'pk'
-    queryset = Attachment.objects.filter(instance__deleted_at__isnull=True)
+    queryset = Attachment.objects.filter(
+        instance__deleted_at__isnull=True, deleted_at__isnull=True)
     permission_classes = (AttachmentObjectPermissions,)
     serializer_class = AttachmentSerializer
     pagination_class = StandardPageNumberPagination
@@ -100,9 +101,7 @@ class AttachmentViewSet(AuthenticateHeaderMixin, CacheControlMixin, ETagsMixin,
                 if not xform.shared_data:
                     raise Http404(_("Not Found"))
 
-        request_data = self.filter_queryset(self.get_queryset())
-        self.object_list = self.object_list = [
-            a for a in request_data if a.deleted_at is None]
+        self.object_list = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(self.object_list)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
