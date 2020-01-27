@@ -240,6 +240,13 @@ def save_attachments(xform, instance, media_files):
                 mimetype=content_type,
                 name=filename,
                 extension=extension)
+        replaced_attachments = (
+            a for a in Attachment.objects.filter(instance=instance)
+            if a.media_file.name.split('/')[-1] not in media_files)
+
+        if replaced_attachments:
+            for a in replaced_attachments:
+                a.soft_delete()
     update_attachment_tracking(instance)
 
 
