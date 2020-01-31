@@ -73,7 +73,9 @@ class XFormListViewSet(ETagsMixin, BaseViewset,
 
     def filter_queryset(self, queryset):
         username = self.kwargs.get('username')
-        if username is None and self.request.user.is_anonymous:
+        form_uuid = self.kwargs.get('form_uuid')
+        if (username is None and form_uuid is None) and \
+                self.request.user.is_anonymous:
             # raises a permission denied exception, forces authentication
             self.permission_denied(self.request)
 
@@ -88,6 +90,14 @@ class XFormListViewSet(ETagsMixin, BaseViewset,
             else:
                 queryset = queryset.filter(
                     user=profile.user, downloadable=True)
+
+        if form_uuid:
+            queryset = queryset.filter(uuid=form_uuid)
+            form_owner = queryset.first().user
+
+            if form_owner.profile.require_auth and \
+                    self.request.user.is_anonymous:
+                self.permission_denied(self.request)
 
         queryset = super(XFormListViewSet, self).filter_queryset(queryset)
         if not self.request.user.is_anonymous:
