@@ -343,10 +343,17 @@ def get_enketo_edit_url(request, instance, return_url):
     return url
 
 
-def get_enketo_preview_url(request, username, id_string, xform_pk=None):
+def get_enketo_preview_url(
+        request, id_string, username=None, xform_pk=None, xform_uuid=None):
     """Return an Enketo preview URL."""
-    form_url = get_form_url(
-        request, username, settings.ENKETO_PROTOCOL, True, xform_pk=xform_pk)
+    if xform_pk and username:
+        form_url = get_form_url(
+            request, username, settings.ENKETO_PROTOCOL, True,
+            xform_pk=xform_pk)
+    elif xform_uuid:
+        form_url = get_form_url(
+            request, protocol=settings.ENKETO_PROTOCOL, preview=True,
+            xform_uuid=xform_uuid)
     values = {'form_id': id_string, 'server_url': form_url}
 
     response = requests.post(
