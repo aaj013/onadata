@@ -294,7 +294,8 @@ def get_form_url(request,
                  username=None,
                  protocol='https',
                  preview=False,
-                 xform_pk=None):
+                 xform_pk=None,
+                 xform_uuid=None,):
     """
     Return a form list url endpoint to be used to make a request to Enketo.
 
@@ -315,6 +316,8 @@ def get_form_url(request,
     if preview:
         url = '%s/preview' % url
 
+    if xform_uuid:
+        url = "{}/e/{}".format(url, xform_uuid)
     if username and xform_pk is None:
         url = "{}/{}".format(url, username)
     if username and xform_pk:
